@@ -6,12 +6,11 @@ export default function Login() {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [message, setMessage] = useState(""); // State for messages (success/error)
   let navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     console.log(credentials); 
 
-    const response = await fetch("http://localhost:4000/api/loginuser", {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/loginuser`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
