@@ -48,7 +48,7 @@ app.use(express.json());
 
 // Middleware for CORS
 const allowedOrigins = [
-  "https://orderfood-sigma.vercel.app",  // Production URL
+  "https://foodorder-psi-three.vercel.app/",  // Production URL
   "http://localhost:3000"  // Localhost for development
 ];
 
