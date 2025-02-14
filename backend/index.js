@@ -108,6 +108,7 @@ const createUserRoute = require("./Routes/CreateUser");
 const DisplayRoute = require("./Routes/DisplayData");
 const OrderRoute = require("./Routes/OrderData");
 const cors = require("cors");
+const { testConnection } = require('./db');
 require('dotenv').config();
 
 // Middleware
@@ -158,18 +159,17 @@ app.get("/", (req, res) => {
 // Start server
 const startServer = async () => {
   try {
-    await db.getConnection();
-    console.log("Database connected successfully");
-    
-    app.listen(port, () => {
-      console.log(`Server running on port ${port}`);
-    });
+      // Test database connection before starting server
+      await testConnection();
+      
+      app.listen(port, () => {
+          console.log(`Server running on port ${port}`);
+      });
   } catch (error) {
-    console.error("Failed to start server:", error);
-    process.exit(1);
+      console.error("Failed to start server:", error);
+      process.exit(1);
   }
 };
-
 startServer();
 
 // Handle unhandled rejections
