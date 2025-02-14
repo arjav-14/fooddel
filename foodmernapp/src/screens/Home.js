@@ -194,15 +194,44 @@ export default function Home() {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 6;
 
+    // const loadData = async () => {
+    //     try {
+    //         const response = await fetch(`${process.env.REACT_APP_API_URL}/api/foodData`,{
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //         });
+    //         const [items, categories] = await response.json();
+    //         setFoodItems(items);
+    //         setFoodCategories(categories);
+    //         setFilteredItems(items);
     const loadData = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/foodData`,{
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/foodData`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
+                body: JSON.stringify({ search: "" }) // Add empty search parameter
             });
-            const [items, categories] = await response.json();
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const result = await response.json();
+            
+            if (!result.success) {
+                throw new Error(result.message || 'Failed to fetch data');
+            }
+    
+            const [items, categories] = result.data;
+            
+            if (!Array.isArray(items) || !Array.isArray(categories)) {
+                throw new Error('Invalid data format received from server');
+            }
+    
             setFoodItems(items);
             setFoodCategories(categories);
             setFilteredItems(items);

@@ -54,7 +54,8 @@ app.use(express.json());
 // Middleware for CORS
 const allowedOrigins = [
    // Production URL
-  "http://localhost:3000"  // Localhost for development
+  "http://localhost:3000",
+  'https://fooddel-frontend-23ot.onrender.com'//   // Localhost for development
 ];
 
 app.use(cors({
@@ -72,13 +73,22 @@ app.use(cors({
   credentials: true // Allow cookies if needed
 }));
 
-// Connect to MongoDB
 
+
+
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({
+    success: false,
+    message: err.message || 'Internal Server Error'
+  });
+});
 
 // Simple route to check if the server is up
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.json({ status: 'ok', message: "Server is running" });
 });
+
 
 // User routes
 app.use("/api", createUserRoute);
