@@ -209,32 +209,25 @@ export default function Home() {
     const loadData = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/api/foodData`, {
-                method: "POST",
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ search: "" }) // Add empty search parameter
+                    'Content-Type': 'application/json'
+                }
             });
     
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorData = await response.json();
+                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
             }
     
-            const result = await response.json();
-            
-            if (!result.success) {
-                throw new Error(result.message || 'Failed to fetch data');
-            }
-    
-            const [items, categories] = result.data;
-            
-            if (!Array.isArray(items) || !Array.isArray(categories)) {
+            const data = await response.json();
+            if (Array.isArray(data) && data.length === 2) {
+                setFoodItems(data[0]);
+                setFoodCategories(data[1]);
+                setFilteredItems(data[0]);
+            } else {
                 throw new Error('Invalid data format received from server');
             }
-    
-            setFoodItems(items);
-            setFoodCategories(categories);
-            setFilteredItems(items);
         } catch (error) {
             console.error("Error fetching food data:", error);
         }
