@@ -100,9 +100,9 @@ const pool = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    ssl: isProduction ? {
-        rejectUnauthorized: true
-    } : false
+    ssl: {
+        rejectUnauthorized: false
+      }
 });
 
 const db = {
