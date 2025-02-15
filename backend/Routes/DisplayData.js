@@ -15,22 +15,10 @@ router.post("/foodData", async (req, res) => {
       params = [`%${search}%`, `%${search}%`];
     }
 
-    
+    const foodItems = await db.query(foodItemsQuery, params);
+    const foodCategories = await db.query("SELECT * FROM foodcategory");
 
-    const [foodItems] = await db.query(foodItemsQuery, params);
-    const [foodCategories] = await db.query("SELECT * FROM foodcategory");
-
-    if (!foodItems || !foodCategories) {
-      return res.status(404).json({
-        success: false,
-        message: "No data found"
-      });
-    }
-
-    res.json({
-      success: true,
-      data: [foodItems, foodCategories]
-    });
+    res.json([foodItems, foodCategories]);
   } catch (error) {
     console.error("Error fetching data:", error.message);
     res.status(500).send("Server error");

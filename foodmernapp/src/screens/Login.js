@@ -11,7 +11,7 @@ export default function Login() {
     e.preventDefault(); 
     console.log(credentials); 
 
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/loginuser`, {
+    const response = await fetch("http://localhost:4000/api/loginuser", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

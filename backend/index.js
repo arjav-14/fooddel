@@ -55,7 +55,7 @@ app.use(express.json());
 const allowedOrigins = [
    // Production URL
   "http://localhost:3000",
-  'https://fooddel-frontend-23ot.onrender.com'//   // Localhost for development
+  //   // Localhost for development
 ];
 
 app.use(cors({

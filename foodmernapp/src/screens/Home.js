@@ -194,40 +194,18 @@ export default function Home() {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 6;
 
-    // const loadData = async () => {
-    //     try {
-    //         const response = await fetch(`${process.env.REACT_APP_API_URL}/api/foodData`,{
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             },
-    //         });
-    //         const [items, categories] = await response.json();
-    //         setFoodItems(items);
-    //         setFoodCategories(categories);
-    //         setFilteredItems(items);
     const loadData = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/foodData`, {
-                method: 'POST',
+            const response = await fetch("http://localhost:4000/api/foodData",{
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    "Content-Type": "application/json",
+                },
             });
-    
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-            }
-    
-            const data = await response.json();
-            if (Array.isArray(data) && data.length === 2) {
-                setFoodItems(data[0]);
-                setFoodCategories(data[1]);
-                setFilteredItems(data[0]);
-            } else {
-                throw new Error('Invalid data format received from server');
-            }
+            const [items, categories] = await response.json();
+            setFoodItems(items);
+            setFoodCategories(categories);
+            setFilteredItems(items);
         } catch (error) {
             console.error("Error fetching food data:", error);
         }
