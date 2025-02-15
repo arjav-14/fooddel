@@ -9,7 +9,7 @@ export default function Signup() {
         e.preventDefault(); 
         console.log(credentials); 
 
-        const response = await fetch("http://localhost:4000/api/createuser", {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/createuser`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',

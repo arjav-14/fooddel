@@ -19,7 +19,7 @@ const Transactions = () => {
             }
     
             try {
-                const response = await fetch(`http://localhost:4000/api/transactions/${userEmail}`, {
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/transactions/${userEmail}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
