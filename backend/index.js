@@ -39,66 +39,66 @@
 
 
 //correct
-const express = require("express");
-const app = express();
-const port = process.env.PORT || 4000;
-const db = require('./db')
-const createUserRoute = require("./Routes/CreateUser");
-const DisplayRoute = require("./Routes/DisplayData");
-const OrderRoute = require("./Routes/OrderData");
-const cors = require("cors");
+// const express = require("express");
+// const app = express();
+// const port = process.env.PORT || 4000;
+// const db = require('./db')
+// const createUserRoute = require("./Routes/CreateUser");
+// const DisplayRoute = require("./Routes/DisplayData");
+// const OrderRoute = require("./Routes/OrderData");
+// const cors = require("cors");
 
-// Middleware to parse JSON bodies
-app.use(express.json());
+// // Middleware to parse JSON bodies
+// app.use(express.json());
 
-// Middleware for CORS
-const allowedOrigins = [
-   // Production URL
-  "http://localhost:3000",
-  //   // Localhost for development
-];
+// // Middleware for CORS
+// const allowedOrigins = [
+//    // Production URL
+//   "http://localhost:3000",
+//   //   // Localhost for development
+// ];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (allowedOrigins.includes(origin) || !origin) {
-      // Allow requests from localhost (for local testing) or production
-      callback(null, true);
-    } else {
-      // Block any other origin
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed HTTP methods
-  allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
-  credentials: true // Allow cookies if needed
-}));
-
-
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     if (allowedOrigins.includes(origin) || !origin) {
+//       // Allow requests from localhost (for local testing) or production
+//       callback(null, true);
+//     } else {
+//       // Block any other origin
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed HTTP methods
+//   allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+//   credentials: true // Allow cookies if needed
+// }));
 
 
-app.use((err, req, res, next) => {
-  console.error('Error:', err);
-  res.status(500).json({
-    success: false,
-    message: err.message || 'Internal Server Error'
-  });
-});
-
-// Simple route to check if the server is up
-app.get("/", (req, res) => {
-  res.json({ status: 'ok', message: "Server is running" });
-});
 
 
-// User routes
-app.use("/api", createUserRoute);
-app.use("/api", DisplayRoute);
-app.use("/api", OrderRoute);
+// app.use((err, req, res, next) => {
+//   console.error('Error:', err);
+//   res.status(500).json({
+//     success: false,
+//     message: err.message || 'Internal Server Error'
+//   });
+// });
 
-// Start the server
-app.listen(port, () => {
-  console.log(`App started on port ${port}`);
-});
+// // Simple route to check if the server is up
+// app.get("/", (req, res) => {
+//   res.json({ status: 'ok', message: "Server is running" });
+// });
+
+
+// // User routes
+// app.use("/api", createUserRoute);
+// app.use("/api", DisplayRoute);
+// app.use("/api", OrderRoute);
+
+// // Start the server
+// app.listen(port, () => {
+//   console.log(`App started on port ${port}`);
+// });
 
 // const express = require("express");
 // const app = express();
@@ -181,3 +181,60 @@ app.listen(port, () => {
 //     process.exit(1);
 //   }
 // });
+
+const express = require("express");
+const app = express();
+const port = process.env.PORT || 4000;
+const db = require('./db');
+const createUserRoute = require("./Routes/CreateUser");
+const DisplayRoute = require("./Routes/DisplayData");
+const OrderRoute = require("./Routes/OrderData");
+const cors = require("cors");
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Allowed Origins
+const allowedOrigins = [
+  "https://fooddel-frontend.vercel.app", // Vercel frontend URL
+  "http://localhost:3000" // Localhost for development
+];
+
+// CORS Configuration
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, etc.) or from allowed origins
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed HTTP methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+  credentials: true // Allow cookies if needed
+}));
+
+// Error Handling Middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({
+    success: false,
+    message: err.message || 'Internal Server Error'
+  });
+});
+
+// Simple route to check if the server is up
+app.get("/", (req, res) => {
+  res.json({ status: 'ok', message: "Server is running" });
+});
+
+// User routes
+app.use("/api", createUserRoute);
+app.use("/api", DisplayRoute);
+app.use("/api", OrderRoute);
+
+// Start the server
+app.listen(port, () => {
+  console.log(`App started on port ${port}`);
+});
