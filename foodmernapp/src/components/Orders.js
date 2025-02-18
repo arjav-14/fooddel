@@ -9,7 +9,7 @@ const Orders = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await fetch('http://localhost:4000/api/orders');
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/orders`);
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(errorData.message || 'Failed to fetch orders');
