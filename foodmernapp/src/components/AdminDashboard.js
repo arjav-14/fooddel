@@ -8,7 +8,7 @@ export default function AdminDashboard() {
     useEffect(() => {
         const fetchTotalSales = async () => {
             try {
-                const response = await fetch('http://localhost:4000/api/total-sales');
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/total-sales`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch total sales');
                 }
