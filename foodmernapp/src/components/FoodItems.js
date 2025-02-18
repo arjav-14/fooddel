@@ -47,7 +47,7 @@ const FoodItems = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:4000/api/food-items', {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/food-items`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

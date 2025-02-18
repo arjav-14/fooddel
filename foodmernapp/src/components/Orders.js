@@ -28,7 +28,7 @@ const Orders = () => {
 
     const handleDelete = async (orderId) => {
         try {
-            const response = await fetch(`http://localhost:4000/api/orders/${orderId}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/orders/${orderId}`, {
                 method: 'DELETE',
             });
 

@@ -9,7 +9,7 @@ const Users = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch('http://localhost:4000/api/users');
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch users');
                 }
