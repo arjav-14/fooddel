@@ -116,7 +116,7 @@ router.delete("/orders/:id" , async(req , res)=>{
         res.status(500).json({message : 'server error'})
     }
 })
-// Example DELETE endpoint in your backend
+
 router.delete('/users/:id', async (req, res) => {
     const userId = req.params.id;
 
@@ -143,17 +143,15 @@ router.delete('/users/:id', async (req, res) => {
     }
 });
 router.get('/total-sales', async (req, res) => {
-        try {
-            const [result] = await db.query(`
-                SELECT SUM(total_amount) AS total_sales FROM orders
-            `);
-            const totalSales = result[0]?.totalSales || 0; 
-            res.json({ totalSales }); 
-        } catch (error) {
-            console.error('Error fetching total sales:', error);
-            res.status(500).json({ message: 'Server error' });
-        }
-    });
+    try {
+        const totalSales = await db.query("SELECT SUM(total_amount) AS totalSales from orders where status = 'Success' ");
+        res.json({ totalSales }); 
+    } catch (error) {
+        console.error('Error fetching total sales:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 
 router.post("/addFoodCategory" , async(req , res)=>{
     const { category_name } = req.body;
