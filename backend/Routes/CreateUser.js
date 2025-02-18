@@ -3,6 +3,7 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const adminConfig = require('../config/adminConfig');
 
 // Environment Variables
 require('dotenv').config();
@@ -70,8 +71,7 @@ router.post('/createuser',
   }
 );
 
-
-// User Login Route
+// Update the login route
 router.post('/loginuser',
   body('email').isEmail().withMessage('Invalid email format'),
   body('password').isLength({ min: 5 }).withMessage('Password should be at least 5 characters long'),
@@ -87,6 +87,19 @@ router.post('/loginuser',
     const { email, password } = req.body;
 
     try {
+      // Check for admin credentials
+      if (email === "admin@admin.com") {
+        const isAdmin = await bcrypt.compare(password, '$2a$10$evIZY/1TqFezb3.1DmGxHezA3/QbdBoTIs025k9QahrFjz0AI9Fam');
+        if (isAdmin) {
+          const authToken = jwt.sign({ id: 10 }, jwtSecret);
+          return res.json({ 
+            success: true, 
+            authToken
+          });
+        }
+      }
+
+      // If not admin, check for regular user
       const [rows] = await pool.execute('SELECT * FROM users WHERE email = ?', [email]);
       const userData = rows[0];
 
@@ -99,14 +112,12 @@ router.post('/loginuser',
         return res.status(400).json({ success: false, message: 'Invalid email or password' });
       }
 
-      const data = {
-        user: {
-          id: userData.id
-        }
-      };
+      const authToken = jwt.sign({ id: userData.id }, jwtSecret);
+      return res.json({ 
+        success: true, 
+        authToken
+      });
 
-      const authToken = jwt.sign(data, jwtSecret);
-      return res.json({ success: true, authToken });
     } catch (error) {
       console.error("Error during login:", error);
       res.status(500).json({ success: false, message: 'Internal server error' });

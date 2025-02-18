@@ -3,40 +3,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db"); 
 
-// router.post('/orderData', async (req, res) => {
-//   const { order_data, email, order_date } = req.body;
 
-//   console.log("Received order data:", req.body); 
-
-//   if (!order_data || !email || !order_date) {
-//       return res.status(400).json({ message: 'Missing required fields' });
-//   }
-//   let formattedOrderDate;
-//   try {
-//       const date = new Date(order_date);
-//       formattedOrderDate = date.toISOString().slice(0, 19).replace('T', ' '); 
-//   } catch (error) {
-//       console.error("Error formatting order_date:", error);
-//       return res.status(400).json({ message: 'Invalid date format' });
-//   }
-//   const orderEntry = {
-//       email,
-//       order_data: JSON.stringify(order_data), 
-//   };
-//   try { 
-//       const existingOrder = await db.query("SELECT * FROM orders WHERE email = ? AND order_data = ?", [email, orderEntry.order_data]);
-//       if (existingOrder.length === 0) {
-          
-//           await db.query("INSERT INTO orders (email, order_data, order_date) VALUES (?, ?, ?)", [email, orderEntry.order_data, formattedOrderDate]);
-//           return res.json({ success: true, message: 'Order placed successfully' });
-//       } else {
-//           return res.status(400).json({ message: 'This order has already been placed' });
-//       }
-//   } catch (error) {
-//       console.error("Error processing order:", error.message);
-//       return res.status(500).send("Server Error");
-//   }
-//});
 router.post('/orderData', async (req, res) => {
   const { order_data, email, order_date, total_amount } = req.body;
 
