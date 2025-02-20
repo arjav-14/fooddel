@@ -9,7 +9,7 @@ const FoodItems = () => {
     useEffect(() => {
         const fetchFoodItems = async () => {
             try {
-                const response = await fetch('http://localhost:4000/api/food-items');
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/food-items`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch food items');
                 }
@@ -23,7 +23,7 @@ const FoodItems = () => {
 
         const fetchCategories = async () => {
             try {
-                const response = await fetch('http://localhost:4000/api/categories');
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch categories');
                 }
